@@ -1,0 +1,62 @@
+fmod RATIONAL is
+    protecting INT .
+    protecting NAT .
+
+    sorts PosRational NzRational Rational .  --- 0 can't be of Rational as it belongs to Int
+    subsort NzInt < NzRational Int < Rational .
+    subsort NzNat < PosRational < NzRational < Rational .
+
+    --- OPs
+
+    op _/_ : NzInt NzNat -> NzRational [ctor] .  --- NzInt 2 bcs 0 is of Nat
+    op _/_ : NzNat NzNat -> NzRational [ctor] .
+    op _/_ : Rational NzRational -> Rational [ditto] .
+    op _/_ : PosRational PosRational -> PosRational [ditto] .
+    op _/_ : NzRational NzRational -> NzRational [ditto] .
+    
+    op _+_ : Rational Rational -> Rational [ditto] .
+    op _+_ : PosRational PosRational -> PosRational [ditto] .
+    op _+_ : NzRational Rational -> NzRational [ditto] .
+
+    op _-_ : Rational Rational -> Rational [ditto] .
+
+    op _*_ : Rational Rational -> Rational [ditto] .
+    op _*_ : NzRational NzRational -> NzRational [ditto] .
+
+    --- VARS
+
+    var N : Nat .
+    var J K : NzNat .
+    var Z : Int .
+    var L M : NzInt .
+    var Q : NzRational .
+    var R : Rational .
+
+    --- /
+    
+    eq 0 / Q = 0 .
+    eq L / (- J) = (- L) / J .
+    eq (L / J) / (M / K) = (L * K) / (J * M) .
+    eq (L / J) / M = L / (J * M) .
+    eq L / (J / M) = (L * M) / J .
+
+    --- +
+
+    eq 0 + R = R .
+    eq (L / J) + (M / K) = ((L * K) + (M * J)) / (J * K) .
+    eq (L / J) + Z = (L + (Z * J)) / J .
+        
+    --- -
+    
+    eq R - 0 = R .
+    eq (L / J) - (M / K) = ((L * K) - (M * J)) / (J * K) .
+    eq (L / J) - Z = (L - (Z * J)) / J .
+    eq Z - (L / J) = ((Z * J) - L) / J .
+
+    --- *
+
+    eq Q * 0 = 0 .
+    eq (L / J) * (M / K) = ((L * M) / (J * K)) .
+    eq (L / J) * Z = ((L * Z) / J) .
+
+endfm

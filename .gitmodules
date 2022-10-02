@@ -1,0 +1,3 @@
+[submodule "Maude"]
+	path = Maude
+	url = https://github.com/SRI-CSL/Maude
