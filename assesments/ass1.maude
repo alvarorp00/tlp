@@ -29,7 +29,6 @@ fmod RATIONAL is
 
     op _+_ : Rational Rational -> Rational [ditto] .
     op _+_ : NzRational NzRational -> NzRational [ditto] .
-    op _+_ : Int Rational -> Rational [ditto] .
 
     eq 0 + R = R .
     eq (K / I) + (L / J) = ((K * J) + (L * I)) / (I * J) .
