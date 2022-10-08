@@ -118,15 +118,16 @@ fmod BTREE-SEARCH is
 
     --- DELETE
 
-    ceq del(S1, N) = new if empty(left(S1)) /\ empty(right(S1)) /\ root(S1) == N .
-    ceq del(S1, N) = right(S1) if empty(left(S1)) /\ empty(right(S1)) = false /\ root(S1) == N .
-    ceq del(S1, N) = left(S1) if empty(left(S1)) = false /\ empty(right(S1)) /\ root(S1) == N .
-    ceq del(S1, N) = S1 if empty(left(S1)) /\ empty(right(S1)) /\ root(S1) =/= N .
+    ceq del(S1, N) = new if empty(left(S1)) /\ empty(right(S1)) /\ N == root(S1) .
+    ceq del(S1, N) = right(S1) if empty(left(S1)) /\ empty(right(S1)) = false /\ N == root(S1) .
+    ceq del(S1, N) = left(S1) if empty(left(S1)) = false /\ empty(right(S1)) /\ N == root(S1) .
+    ceq del(S1, N) = S1 if empty(left(S1)) /\ empty(right(S1)) /\ N =/= root(S1) .
     ceq del(S1, N) = S1 if N < root(S1) /\ empty(left(S1)) .
     ceq del(S1, N) = (del(left(S1), N) [root(S1)] right(S1)) if N < root(S1) /\ empty(left(S1)) = false .
-    ceq del(S1, N) = S1 if N < root(S1) /\ empty(right(S1)) .
+    ceq del(S1, N) = S1 if N > root(S1) /\ empty(right(S1)) .
     ceq del(S1, N) = (left(S1) [root(S1)] del(right(S1), N)) if N > root(S1) /\ empty(right(S1)) = false .
-    ceq del(S1, N) = (left(S1) [successor(S1)] del(right(S1), successor(S1))) if true : Bool .
+    ceq del(S1, N) = (left(S1) [successor(S1)] del(right(S1), successor(S1))) if N == root(S1) /\ empty(left(S1)) = false /\ empty(right(S1)) = false .
+    ceq del(S1, N) = S1 if true : Bool .
 
     --- Example: red in BTREE-SEARCH : del(((new [4] (new [7] new)) [8] (((new [9] new) [10] (new [11] new)) [12] new)), 4) .
 
