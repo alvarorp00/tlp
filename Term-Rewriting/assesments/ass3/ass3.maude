@@ -11,14 +11,10 @@ mod PEG-GAME-GENERICS is
     vars x y : Nat .
 
     rl [hr1] : peg(x, y) peg(x, s(y)) empty(x, s(s(y))) => empty(x, y) empty(x, s(y)) peg(x, s(s(y))) .
-    --- rl [hr2] : peg(x, s(s(y))) peg(x, s(y)) empty(x, y) => empty(x, s(s(y))) empty(x, s(y)) peg(x, y) .
     rl [hr3] : empty(x, y) peg(x, s(y)) peg(x, s(s(y))) => peg(x, y) empty(x, s(y)) empty(x, s(s(y))) .
-    --- rl [hr4] : empty(x, s(s(y))) peg(x, s(y)) peg(x, y) => peg(x, s(s(y))) empty(x, s(y)) empty(x, y) .
 
     rl [vr1] : peg(x, y) peg(s(x), y) empty(s(s(x)), y) => empty(x, y) empty(s(x), y) peg(s(s(x)), y) .
-    --- rl [vr2] : peg(s(s(x)), y) peg(s(x), y) empty(x, y) => empty(s(s(x)), y) empty(s(x), y) peg(x, y) .
     rl [vr3] : empty(x, y) peg(s(x), y) peg(s(s(x)), y) => peg(x, y) empty(s(x), y) empty(s(s(x)), y) .
-    --- rl [vr4] : empty(s(s(x)), y) peg(s(x), y) peg(x, y) => peg(s(s(x)), y) empty(s(x), y) empty(x, y) .
 
 endm
 
@@ -28,16 +24,15 @@ mod PEG-GAME-TRIANGLE is
     vars x y : Nat .
 
     rl [drlo1] : peg(x, y) peg(s(x), s(y)) empty(s(s(x)), s(s(y))) => empty(x, y) empty(s(x), s(y)) peg(s(s(x)), s(s(y))) .
-    --- rl [drlu1] : empty(x, y) peg(s(x), s(y)) peg(s(s(x)), s(s(y))) => peg(x, y) empty(s(x), s(y)) empty(s(s(x)), s(s(y))) .
     rl [drlo2] : peg(s(s(x)), s(s(y))) peg(s(x), s(y)) empty(x, y) => empty(s(s(x)), s(s(y))) empty(s(x), s(y)) peg(x, y) .
-    --- rl [drlu2] : empty(s(s(x)), s(s(y))) peg(s(x), s(y)) peg(x, y) => peg(s(s(x)), s(s(y))) empty(s(x), s(y)) empty(x, y) .
 
     op initial : -> Field .
     eq initial = peg(1, 1) peg(2, 1) peg(2, 2) peg(3, 1) empty(3, 2) peg(3, 3) peg(4, 1) peg(4, 2) peg(4, 3) peg(4, 4) peg(5, 1) peg(5, 2) peg(5, 3) peg(5, 4) peg(5, 5) .
     --- Solution : search initial =>* peg(5, 3) empty(1, 1) empty(2, 1) empty(2, 2) empty(3, 1) empty(3, 2) empty(3, 3) empty(4, 1) empty(4, 2) empty(4, 3) empty(4, 4) empty(5, 1) empty(5, 2) empty(5, 4) empty(5, 5) .
+    --- Perfect solution can't be found with this configuration
 
-    op initial' : -> Field .
+    op initial' : -> Field .   --- Alternative initial board that can achieve a perfect solution
     eq initial' = empty(1, 1) peg(2, 1) peg(2, 2) peg(3, 1) peg(3, 2) peg(3, 3) peg(4, 1) peg(4, 2) peg(4, 3) peg(4, 4) peg(5, 1) peg(5, 2) peg(5, 3) peg(5, 4) peg(5, 5) .
-    --- Solution : search initial' =>* peg(5, 3) empty(1, 1) empty(2, 1) empty(2, 2) empty(3, 1) empty(3, 2) empty(3, 3) empty(4, 1) empty(4, 2) empty(4, 3) empty(4, 4) empty(5, 1) empty(5, 2) empty(5, 4) empty(5, 5) .
+    --- Solution : search initial' =>* peg(1, 1) empty(1, 1) empty(2, 1) empty(2, 2) empty(3, 1) empty(3, 2) empty(3, 3) empty(4, 1) empty(4, 2) empty(4, 3) empty(4, 4) empty(5, 1) empty(5, 2) empty(5, 3) empty(5, 4) empty(5, 5) .
     
 endm
