@@ -1,0 +1,48 @@
+fmod Rationals is
+    protecting NAT .
+    protecting INT .
+
+    sorts Rat NzRat .
+    subsort NzRat < Rat .
+
+    --- Disable next two so partial operation below can be enabled
+
+    --- op _/_ : Int NzNat -> Rat [ctor] .
+    --- op _/_ : NzInt NzNat -> NzRat [ctor] .
+
+    --- Other way
+
+    op _/_ : Int Nat ~> Rat [ctor] .  --- Partial operation with '~' --> define in which cases won't work
+
+    op z : -> Rat [ctor] .  --- define 0 as z constructor
+    op u : -> Rat [ctor] .  --- define 1 as u constructor
+
+    mb (P:NzInt / Q:NzNat ) : NzRat .  --- anonymous variables, can also be defined as 'var P : NzInt'...
+    mb (P:Int / Q:NzNat ) : Rat .
+
+    --- ops _+_ _*_ : Rat Rat -> Rat [assoc comm] .  --- if subsort including either NAT or INT --> [assoc comm] -> [ditto]
+    --- op _-_ : Rat Rat -> Rat [assoc] .
+    --- op _%_ : Rat NzRat -> Rat .
+
+    ops _+_ _*_ : Rat Rat -> Rat [ditto] .
+    op _-_ : Rat Rat -> Rat [ditto] .
+    op _%_ : Rat NzRat -> Rat .
+
+    var P P' : Int .
+    var Q Q' : NzNat .
+    
+    eq 0 / Q = z .
+
+    eq (P / Q) + (P' / Q') = (P * Q' + P' * Q) / (Q * Q') .
+    eq (P / Q) + P' = (P + (P' * Q)) / Q .
+
+    eq (P / Q) - (P' / Q') = (P * Q' - P' * Q) / (Q * Q') .
+    eq (P / Q) - P' = (P - (P' * Q)) / Q .
+    eq P' - (P / Q) = ((P' * Q) - P) / Q .
+
+    --- Defining division with gcd so it can be reduced
+
+    ceq P / Q = (P quo G) / (Q quo G) if G := gcd(P, Q) /\ G > 1 .  --- Note the difference bt '=' and ':=' | Another way below
+    --- ceq P / Q = (P quo (gcd(P, Q))) / (Q quo (gcd(P, Q))) .
+    
+endfm

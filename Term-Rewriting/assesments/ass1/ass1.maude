@@ -1,0 +1,52 @@
+fmod RATIONAL is
+    protecting NAT .
+    protecting INT .
+
+    sorts NzRational Rational .
+
+    subsort Int < NzRational < Rational .
+
+    vars I J : NzNat .
+    vars K L : NzInt .
+    var M : Nat .
+    var O : Int .
+    var Q : NzRational .
+    var R : Rational .
+
+    op _/_ : Int NzNat -> Rational [ctor] .
+    op _/_ : NzInt NzNat -> NzRational [ctor] .
+
+    eq 0 / Q = 0 .
+    eq (K) / (- I) = (- K) / I .
+
+    op _%_ : Rational NzRational -> Rational .  --- rational division
+
+    eq 0 % Q = 0 .
+    eq K % I = K / I .
+    eq (K / I) % (L / J) = (K * J) / (I * L) .
+    eq O % (K / I) = (O * I) / K .
+    eq (K / I) % J = K / (I * J) .
+
+    op _+_ : Rational Rational -> Rational [ditto] .
+
+    eq 0 + R = R .
+    eq (K / I) + (L / J) = ((K * J) + (L * I)) / (I * J) .
+    eq (K / I) + O = (K + (O * I)) / I .
+
+    op _-_ : Rational Rational -> Rational [ditto] .
+
+    eq R - 0 = R .
+    eq (K / I) - (L / J) = ((K * J) - (L * I)) / (I * J) .
+    eq (K / I) - O = (K - (O * I)) / I .
+    eq O - (K / I) = ((O * I) - K) / I .
+
+    op _*_ : Rational Rational -> Rational [ditto] .
+    op _*_ : NzRational NzRational -> NzRational [ditto] .
+
+    eq Q * 0 = 0 .
+    eq (K / I) * (L / J) = (K * L) / (I * J) .
+    eq (K / I) * O = (K * O) / I .
+
+    --- Ex: reduce in RATIONAL : (((s s s s s 0) / (s s 0)) % ((s s 0) / (-(s s s s 0)))) . --> -20 / 4 (Should be reduce to -5??)
+    
+endfm

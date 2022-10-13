@@ -1,0 +1,148 @@
+fmod SIMPLE-NAT is
+    sort Nat .
+    
+    op zero : -> Nat .
+    op s_ : Nat -> Nat .
+    op _+_ : Nat Nat -> Nat .
+    
+    vars N M : Nat .
+    
+    eq zero + N = N .
+    eq s N + M = s (N + M) .
+endfm
+
+fmod RATIONAL is
+    sort Q .
+endfm
+
+fmod SIMPLE-BOOLEAN is
+    sort MyBool .
+
+    op true : -> MyBool [ctor] .
+    op false : -> MyBool [ctor] .
+
+    op not_ : MyBool -> MyBool .
+    op _and_ : MyBool MyBool -> MyBool .
+    op _or_ : MyBool MyBool -> MyBool .
+
+    var A : MyBool .
+
+    eq not true = false .
+    eq not false = true .
+    eq true and A = A .
+    eq false and A = false .
+    eq true or A = true .
+    eq false or A = A .
+endfm
+
+fmod UNARY-NAT is
+    sort Nat .
+
+    op 0 : -> Nat [ctor] .
+    op s_ : Nat -> Nat [ctor] .
+    op _+_ : Nat Nat -> Nat .
+
+    vars N M : Nat .
+
+    eq 0 + N = N .
+    eq s(M) + N = s(N + M) .
+endfm
+
+fmod NAT3 is
+    including UNARY-NAT .
+    var N : Nat .
+    eq s(s(s(N))) = N .
+endfm
+
+fmod NAT+OPS is
+    protecting BOOL .
+    protecting UNARY-NAT .
+
+    ops _*_ _-_ : Nat Nat -> Nat .
+    ops _<=_ _>_ _>=_ : Nat Nat -> Bool .
+
+    vars N M : Nat .
+    
+    eq 0 * 0 = 0 .
+    eq s(M) * N = (M * N) + N .
+    eq 0 - N = 0 .
+    eq s(M) - 0 = s(M) .
+    eq s(M) - s(N) = M - N .
+    eq 0 <= N = true .
+    eq s(M) <= 0 = false .
+    eq s(M) <= s(N) = M <= N .
+    eq M > N = not (M <= N) .
+    eq M >= N = N <= M .
+endfm
+
+fmod NAT< is
+    sort Nat .
+    
+    op 0 : -> Nat [ctor] .
+    op s_ : Nat -> Nat [ctor] .
+    op _<_ : Nat Nat -> Bool .
+
+    vars N N' : Nat .
+
+    eq N < 0 = false .
+    eq 0 < s N = true .
+    eq s N < s N' = N < N' .
+endfm
+
+fmod NAT-DIV is
+    sorts Nat NzNat .
+    subsort NzNat < Nat .
+
+    op 0 : -> Nat [ctor] .
+    op s : Nat -> NzNat [ctor] .
+    op _+_ : Nat Nat -> Nat .
+    op _*_ : Nat Nat -> Nat .
+    op _-_ : Nat Nat -> Nat .
+    op _<=_ : Nat Nat -> Bool .
+    op _>_ : Nat Nat -> Bool .
+    op _div_ : Nat NzNat -> Nat .
+    op _mod_ : Nat NzNat -> Nat .
+
+    vars M N : Nat .
+    var P : NzNat .
+
+    eq 0 + N = N .
+    eq s(M) + N = s(M + N) .
+    eq 0 * N = 0 .
+    eq s(N) * M = (N * M) + N
+    eq 0 - N = 0 .
+    eq s(M) - 0 = s(M) .
+    eq s(M) - s(N) = M - N .
+    eq 0 <= N = true .
+    eq s(M) <= 0 = false .
+    eq s(M) <= s(N) = M <= N .
+    eq N > M = not (M <= N) .
+    ceq N div P = 0 if P > N .
+    ceq N div P = s((N - P) div P) if N >= P .
+    ceq N mod P = N if P > N .
+    ceq N mod P = (N - P) mod P if P <= N .
+endfm
+
+fmod CARDINAL is
+    protecting NAT< .
+    sort Set .
+
+    op emptySet : -> Set [ctor] .
+    op _._ : Nat Set -> Set [ctor] .  --- add element
+    op # : Set -> Nat .  --- count elements
+
+    vars N N' : Nat .
+    var S : Set .
+
+    eq N . N . S = N . S . --- id
+    ceq N . N' . S = N' . N . S if N' < N .
+
+    eq #(emptySet) = 0 .
+    eq #(N . emptySet) = s 0 .
+    eq #(0 . s N . emptySet) = s s 0 .
+    eq #(s N . s N' . emptySet) = #(N . N' . emptySet) .
+    ceq #(N . N' . S) = s s #(S)
+        if #(N . N' . emptySet) = s s 0
+        /\ #(N . S) = s #(S)
+        /\ #(N' . S) = s #(S) .
+endfm
