@@ -32,11 +32,11 @@ mod PEG-GAME-TRIANGLE is
     rl [drlo2] : peg(s(s(x)), s(s(y))) peg(s(x), s(y)) empty(x, y) => empty(s(s(x)), s(s(y))) empty(s(x), s(y)) peg(x, y) .
     --- rl [drlu2] : empty(s(s(x)), s(s(y))) peg(s(x), s(y)) peg(x, y) => peg(s(s(x)), s(s(y))) empty(s(x), s(y)) empty(x, y) .
 
-    op initial : -> TriField .
+    op initial : -> Field .
     eq initial = peg(1, 1) peg(2, 1) peg(2, 2) peg(3, 1) empty(3, 2) peg(3, 3) peg(4, 1) peg(4, 2) peg(4, 3) peg(4, 4) peg(5, 1) peg(5, 2) peg(5, 3) peg(5, 4) peg(5, 5) .
     --- Solution : search initial =>* peg(5, 3) empty(1, 1) empty(2, 1) empty(2, 2) empty(3, 1) empty(3, 2) empty(3, 3) empty(4, 1) empty(4, 2) empty(4, 3) empty(4, 4) empty(5, 1) empty(5, 2) empty(5, 4) empty(5, 5) .
 
-    op initial' : -> TriField .
+    op initial' : -> Field .
     eq initial' = empty(1, 1) peg(2, 1) peg(2, 2) peg(3, 1) peg(3, 2) peg(3, 3) peg(4, 1) peg(4, 2) peg(4, 3) peg(4, 4) peg(5, 1) peg(5, 2) peg(5, 3) peg(5, 4) peg(5, 5) .
     --- Solution : search initial' =>* peg(5, 3) empty(1, 1) empty(2, 1) empty(2, 2) empty(3, 1) empty(3, 2) empty(3, 3) empty(4, 1) empty(4, 2) empty(4, 3) empty(4, 4) empty(5, 1) empty(5, 2) empty(5, 4) empty(5, 5) .
     
