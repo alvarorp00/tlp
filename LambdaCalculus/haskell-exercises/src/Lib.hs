@@ -5,7 +5,7 @@ import qualified Data.Set as Set
 -- EXERCISE 14. define functions boolChurch and boolUnchurch which translate between the Bool type and Church-encoded booleans.
 
 boolChurch :: Bool -> (Bool -> Bool -> Bool)
-boolChurch True  = \x y -> x
+boolChurch True = \x y -> x
 boolChurch False = \x y -> y
 
 boolUnchurch :: (Bool -> Bool -> Bool) -> Bool
@@ -13,11 +13,11 @@ boolUnchurch f = f True False
 
 -- EXERCISE 15. Analogously to the previous exercise, define functions intChurch and intUnchurch which translate between the int type and Church-encoded integers.
 
-intChurch :: Integral a => Int -> (a -> a) -> a -> a
+intChurch :: Int -> (Int -> Int) -> Int -> Int
 intChurch 0 = \f x -> x
 intChurch n = \f x -> f (intChurch (n-1) f x)
 
-intUnchurch :: Integral a => (a -> a) -> a -> Int
+intUnchurch :: (Int -> Int) -> Int -> Int
 intUnchurch f x = length $ takeWhile (/= x) $ iterate f x
 
 
@@ -110,11 +110,15 @@ mainLib = do
     -- print $ capAvoidSub e "y" (Var "z")
     -- print $ capAvoidSub e2 "y" l_true
     -- print $ capAvoidSub (Var "y") "y" l_true
+    print "Term:"
     let ___e = App ( App ( Lambda "x" (Lambda "y" (Lambda "z" (App (App (Var "x") (Var "y")) (Var "z")))) ) ( Lambda "x" ( App (Var "x") (Var "x") ) ) ) ( Lambda "x" (Var "x") )
     let ___x = Var "x"
-    -- print $ ___e
+    print $ ___e
     -- print $ betaReduce ___e ___x
     -- let __e = Lambda "y" (App (Var "y") (Var "z"))
     -- print $ capAvoidSub __e "z" (Lambda "y" (App (App (Var "x") (Var "y")) (Var "y")))
     let ____e = App (___e) (___x)
+    print "Beta normal form of the application of 'x' over previous term:"
     print $ betaNormalForm ___e
+    print "-------"
+    
